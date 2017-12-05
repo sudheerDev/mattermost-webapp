@@ -40,6 +40,7 @@ export default class LoggedIn extends React.Component {
         };
 
         if (!this.state.user) {
+            $('#root').attr('class', '');
             GlobalActions.emitUserLoggedOutEvent('/login');
         }
     }
@@ -114,8 +115,6 @@ export default class LoggedIn extends React.Component {
     }
 
     componentWillUnmount() {
-        $('#root').attr('class', '');
-
         WebSocketActions.close();
         UserStore.removeChangeListener(this.onUserChanged);
 
