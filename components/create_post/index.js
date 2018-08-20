@@ -54,7 +54,7 @@ function mapStateToProps() {
         const enableConfirmNotificationsToChannel = config.EnableConfirmNotificationsToChannel === 'true';
         const currentUserId = getCurrentUserId(state);
         const userIsOutOfOffice = getStatusForUserId(state, currentUserId) === UserStatuses.OUT_OF_OFFICE;
-
+        const pluginEditorState = state.plugins.editorState;
         return {
             currentTeamId: getCurrentTeamId(state),
             currentChannel,
@@ -77,6 +77,8 @@ function mapStateToProps() {
             enableConfirmNotificationsToChannel,
             maxPostSize: parseInt(config.MaxPostSize, 10) || Constants.DEFAULT_CHARACTER_LIMIT,
             userIsOutOfOffice,
+            pluginEditorState,
+            components: state.plugins.components.CreatePostDropdown,
         };
     };
 }

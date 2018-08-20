@@ -202,6 +202,29 @@ export default class PluginRegistry {
         return id;
     }
 
+    registerCreatePostComponent(component) {
+        return dispatchPluginComponentAction('CreatePost', this.id, component);
+    }
+
+    registerCreatePostButtonAction(action, text) {
+        const id = generateId();
+
+        const data = {
+            id,
+            pluginId: this.id,
+            action,
+            dropdownText: resolveReactElement(text),
+        };
+
+        store.dispatch({
+            type: ActionTypes.RECEIVED_PLUGIN_COMPONENT,
+            name: 'CreatePostDropdown',
+            data,
+        });
+
+        return id;
+    }
+
     // Unregister a component using the unique identifier returned after registration.
     // Accepts a string id.
     // Returns undefined in all cases.

@@ -28,6 +28,8 @@ import ResetStatusModal from 'components/reset_status_modal';
 import EmojiIcon from 'components/svg/emoji_icon';
 import Textbox from 'components/textbox.jsx';
 import TutorialTip from 'components/tutorial/tutorial_tip';
+import CreatePostPlug from 'plugins/create_post_plug';
+import Pluggable from 'plugins/pluggable';
 
 const KeyCodes = Constants.KeyCodes;
 
@@ -250,6 +252,13 @@ export default class CreatePost extends React.Component {
                 serverError: null,
             });
         }
+        if (nextProps.pluginEditorState !== this.props.pluginEditorState) {
+            const draft = nextProps.draft;
+
+            this.setState({
+                message: draft.message,
+            });
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -275,6 +284,7 @@ export default class CreatePost extends React.Component {
     }
 
     doSubmit = (e) => {
+        console.log('submit');
         const channelId = this.props.currentChannel.id;
         if (e) {
             e.preventDefault();
@@ -925,9 +935,11 @@ export default class CreatePost extends React.Component {
                 className={centerClass}
                 onSubmit={this.handleSubmit}
             >
+                <Pluggable pluggableName='CreatePost' submitPost={this.doSubmit}/>
                 <div className={'post-create' + attachmentsDisabled}>
                     <div className='post-create-body'>
-                        <div className='post-body__cell'>
+                        <div className='post-body__cell' style={{paddingLeft: this.props.components ? '40px' : '0px'}}>
+                            <CreatePostPlug />
                             <Textbox
                                 onChange={this.handleChange}
                                 onKeyPress={this.postMsgKeyPress}
