@@ -31,21 +31,9 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
         post: PropTypes.object,
 
         /**
-         * The open graph data to render
-         */
-        openGraphData: PropTypes.object,
-
-        /**
          * Set to collapse the preview
          */
         previewCollapsed: PropTypes.string,
-        actions: PropTypes.shape({
-
-            /**
-             * The function to get open graph data for a link
-             */
-            getOpenGraphMetadata: PropTypes.func.isRequired,
-        }).isRequired,
     }
 
     constructor(props) {
@@ -71,7 +59,6 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
             ERROR: 'error',
         };
 
-        this.fetchData = this.fetchData.bind(this);
         this.toggleImageVisibility = this.toggleImageVisibility.bind(this);
         this.onImageLoad = this.onImageLoad.bind(this);
         this.onImageError = this.onImageError.bind(this);
@@ -87,7 +74,6 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
             hasLargeImage: false,
             removePreview,
         });
-        this.fetchData(this.props.link);
     }
 
     UNSAFE_componentWillReceiveProps(nextProps) { // eslint-disable-line camelcase
@@ -97,9 +83,7 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
                 removePreview,
             });
         }
-        if (nextProps.link !== this.props.link) {
-            this.fetchData(nextProps.link);
-        }
+
         if (nextProps.previewCollapsed !== this.props.previewCollapsed) {
             this.setState({
                 imageVisible: nextProps.previewCollapsed.startsWith('false'),
@@ -109,12 +93,6 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
 
     componentDidUpdate() {
         setTimeout(postListScrollChange, 0);
-    }
-
-    fetchData(url) {
-        if (!this.props.openGraphData) {
-            this.props.actions.getOpenGraphMetadata(url);
-        }
     }
 
     getBestImageUrl(data) {
@@ -258,7 +236,7 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
     }
 
     render() {
-        const data = this.props.openGraphData;
+        const data = this.props.post.opengraph_data[0];
         if (!data || !data.url || this.state.removePreview || isSystemMessage(this.props.post || {})) {
             return null;
         }

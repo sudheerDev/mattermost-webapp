@@ -53,7 +53,7 @@ function makeMapStateToProps() {
             profiles,
             otherUsersCount: ownProps.reactions.length - profiles.length,
             currentUserId: getCurrentUserId(state),
-            reactionCount: ownProps.reactions.length,
+            reactionCount: ownProps.reactions.length || ownProps.post.reaction_counts[ownProps.emojiName],
             canAddReaction,
             canRemoveReaction,
             emojiImageUrl,

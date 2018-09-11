@@ -241,6 +241,7 @@ export default class PostBodyAdditionalContent extends React.PureComponent {
                     onLinkLoadError={this.handleLinkLoadError}
                     onLinkLoaded={this.handleLinkLoaded}
                     handleImageClick={this.handleImageClick}
+                    dimensions={this.props.post.image_dimensions[0]}
                 />
             );
         }

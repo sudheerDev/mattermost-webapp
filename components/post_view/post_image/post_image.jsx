@@ -6,6 +6,7 @@ import React from 'react';
 
 import {postListScrollChange} from 'actions/global_actions.jsx';
 import * as PostUtils from 'utils/post_utils.jsx';
+import loadingGif from 'images/load.gif';
 
 export default class PostImageEmbed extends React.PureComponent {
     static propTypes = {
@@ -34,6 +35,11 @@ export default class PostImageEmbed extends React.PureComponent {
          * If an image proxy is enabled.
          */
         hasImageProxy: PropTypes.bool.isRequired,
+
+        /**
+         * Dimentions from opengraph used for pouplating placeholder during image load.
+         */
+        dimensions: PropTypes.object,
     }
 
     constructor(props) {
@@ -102,10 +108,21 @@ export default class PostImageEmbed extends React.PureComponent {
         this.props.handleImageClick();
     };
 
+    createPlaceholder(dimensions) {
+        return (
+            <div style={{width: dimensions.width, height: dimensions.height + 18}}>
+              <img
+                  className='loader-image'
+                  src={loadingGif}
+              />
+            </div>
+        )
+    }
+
     render() {
         if (this.state.errored || !this.state.loaded) {
             // scroll pop could be improved with a placeholder when !this.state.loaded
-            return null;
+            return this.createPlaceholder(this.props.dimensions);
         }
 
         return (

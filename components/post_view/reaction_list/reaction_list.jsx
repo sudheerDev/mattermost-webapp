@@ -99,26 +99,28 @@ export default class ReactionListView extends React.PureComponent {
     }
 
     render() {
-        if (!this.props.post.has_reactions || (this.props.reactions && this.props.reactions.length === 0)) {
+        const reactionsObj = this.props.post.reaction_counts;
+        if (!this.props.post.has_reactions) {
             return null;
         }
 
         const reactionsByName = new Map();
-        const emojiNames = [];
+        let emojiNames = [];
 
-        if (this.props.reactions) {
+        if (!this.props.reactions.length) {
+            emojiNames = Object.keys(reactionsObj);
+        } else {
             for (const reaction of this.props.reactions) {
-                const emojiName = reaction.emoji_name;
+                  const emojiName = reaction.emoji_name;
 
-                if (reactionsByName.has(emojiName)) {
-                    reactionsByName.get(emojiName).push(reaction);
-                } else {
-                    emojiNames.push(emojiName);
-                    reactionsByName.set(emojiName, [reaction]);
-                }
-            }
+                  if (reactionsByName.has(emojiName)) {
+                      reactionsByName.get(emojiName).push(reaction);
+                  } else {
+                      emojiNames.push(emojiName);
+                      reactionsByName.set(emojiName, [reaction]);
+                  }
+              }
         }
-
         const reactions = emojiNames.map((emojiName) => {
             return (
                 <Reaction
