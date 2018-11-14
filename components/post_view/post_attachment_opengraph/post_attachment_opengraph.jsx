@@ -101,7 +101,7 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
 
         const removePreview = this.isRemovePreview(props.post, props.currentUser);
         const imageUrl = this.getBestImageUrl(props.openGraphData);
-        const hasLargeImage = this.hasLargeImage(props.post.metadata.images[imageUrl]);
+        const hasLargeImage = props.post.metadata && imageUrl ? this.hasLargeImage(props.post.metadata.images[imageUrl]) : false;
         this.state = {
             hasLargeImage,
             removePreview,
@@ -113,7 +113,7 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
         if (!Utils.areObjectsEqual(nextProps.post, this.props.post)) {
             const removePreview = this.isRemovePreview(nextProps.post, nextProps.currentUser);
             const imageUrl = this.getBestImageUrl(nextProps.openGraphData);
-            const hasLargeImage = this.hasLargeImage(nextProps.post.metadata.images[imageUrl]);
+            const hasLargeImage = nextProps.post.metadata && imageUrl ? this.hasLargeImage(nextProps.post.metadata.images[imageUrl]) : false;
 
             this.setState({
                 hasLargeImage,
@@ -134,7 +134,7 @@ export default class PostAttachmentOpenGraph extends React.PureComponent {
     }
 
     getBestImageUrl(data) {
-        if (Utils.isEmptyObject(data.images)) {
+        if (!data || Utils.isEmptyObject(data.images)) {
             return null;
         }
 
