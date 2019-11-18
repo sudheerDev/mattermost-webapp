@@ -226,6 +226,8 @@ export default class SearchBar extends React.Component {
             </Tooltip>
         );
 
+        const searchTxt = Utils.localizeMessage('search_bar.search', 'Search');
+
         return (
             <div className='sidebar-right__table'>
                 <div className='sidebar-collapse__container'>
@@ -252,11 +254,12 @@ export default class SearchBar extends React.Component {
                     className='search-form__container'
                 >
                     <form
-                        role='application'
+                        role='textbox'
                         className={searchFormClass}
                         onSubmit={this.handleSubmit}
                         style={style.searchForm}
                         autoComplete='off'
+                        aria-labelledby='searchBox'
                     >
                         <SearchIcon
                             className='search__icon'
@@ -269,7 +272,8 @@ export default class SearchBar extends React.Component {
                             className='search-bar a11y__region'
                             data-a11y-sort-order='8'
                             aria-describedby='searchbar-help-popup'
-                            placeholder={Utils.localizeMessage('search_bar.search', 'Search')}
+                            aria-label={searchTxt}
+                            placeholder={searchTxt}
                             value={this.props.searchTerms}
                             onFocus={this.handleUserFocus}
                             onBlur={this.handleUserBlur}
